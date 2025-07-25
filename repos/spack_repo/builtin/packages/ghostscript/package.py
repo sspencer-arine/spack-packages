@@ -63,11 +63,14 @@ class Ghostscript(AutotoolsPackage):
     # https://www.ghostscript.com/ocr.html
     variant("tesseract", default=False, description="Use the Tesseract library for OCR")
     variant("gtk", default=True, description="Enable gtk+ device for screen output")
+    variant("krb5", default=True, description="Enable Kerberos 5 support")
+    variant("x11", default=True, description="Enable X11 support")
+    variant("dbus", default=True, description="Enable D-Bus support")
 
     depends_on("c", type="build")
 
     depends_on("pkgconfig", type="build")
-    depends_on("krb5", type="link")
+    depends_on("krb5", type="link", when="+krb5")
 
     depends_on("freetype@2.4.2:")
     depends_on("jpeg")
@@ -75,11 +78,11 @@ class Ghostscript(AutotoolsPackage):
     depends_on("libpng")
     depends_on("libtiff")
     depends_on("zlib-api")
-    depends_on("libx11")
-    depends_on("libxt")
-    depends_on("libxext")
+    depends_on("libx11", when="+x11")
+    depends_on("libxt", when="+x11")
+    depends_on("libxext", when="+x11")
     depends_on("gtkplus", type="link", when="+gtk")
-    depends_on("dbus", type="link")
+    depends_on("dbus", type="link", when="+dbus")
     depends_on("libiconv", type="link")
 
     # https://www.ghostscript.com/doc/9.53.0/News.htm
